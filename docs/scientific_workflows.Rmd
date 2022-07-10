@@ -1,0 +1,62 @@
+---
+title: 'Scientific workflows: report'
+author:
+- Andrea Sánchez-Tapia ^*1*^, Sara R. Mortara^*1*^
+- ^*1*^ ¡liibre! laboratório independente de informática da biodiversidade e reprodutibilidade em ecologia
+date: "July 7th 2022"
+output:
+  html_document:
+    df_print: paged
+abstract: |
+  it will be worth reading the report
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+comm <- read.csv("../data/raw_cestes/comm.csv")
+envir <- read.csv("../data/raw_cestes/envir.csv")
+table <- read.csv("../output/02_envir_summary.csv")
+```
+
+## Introdution
+
+Writing is not easy and nobody wants to waste time inserting tables and figures in conventional text editors. Therefore, the use of tools that allow automation in text files such as latex and rmarkdown is essential. The learning curve is not as fast as in a conventional text editor, but believe me, it will be worth it.
+
+The purpose of this work is just to show you how to make a manuscript using rmarkdown. It is important to remember that data does not speak for itself and needs context.
+
+## Material and Methods
+
+We used data from CESTES data base to understand a bit more about species and the environment. 
+
+The data represent an ecological community of `r ncol(comm)` species distributed in `r nrow(comm)` sites. At each site, the following measurements were taken: `r paste(names(envir), collapse = ", ")`.
+
+
+
+## Results
+
+Variation of environmental variables across sites is something. 
+
+
+```{r table}
+#names(table) <- c("Espécie", "Largura do bico (mm)",
+#                  "Comprimento do bico (mm)", "Comprimento da nadadeira (mm)")
+knitr::kable(tabela, caption = "Table 1. Mean and standard deviation of environmental metrics across sites", "pipe", digits = 2)
+```
+
+
+Most species are rare and a few species are very abundant. 
+
+
+```{r sad, fig.cap = "Figure 1. Species abundance distribution in XXX"}
+knitr::include_graphics("../figs/02_species_abundance.png")
+```
+
+
+
+
+## Discussão
+
+Os pinguins são bonitinhos e parecem apresentar diferença entre os sexos. Não aprendemos muito mais sobre os pinguins porque os dados não significam quase nada sem contexto. Esperamos que vocês tenham perdido o medo e se convencido de que é preciso automatizar as partes chatas do manuscrito e focar naquilo que importa: a escrita em si.
+
+## Referências
+<div id="refs"></div>
