@@ -166,6 +166,6 @@ write.csv(x = comm_total,
           row.names = FALSE)
 
 # Extra: filter ----------------------------------------------------------------
-sp1 <- filter(comm_total, TaxCode == "sp1", Elev > 3)
+sp1 <- filter(comm_total, TaxCode == "sp1", Elev > 3) #select from where
 
 View(sp1)
