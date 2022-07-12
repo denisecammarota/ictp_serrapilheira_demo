@@ -96,7 +96,7 @@ coord$Sites <- as.factor(coord$Sites)
 
 # Joining `coord` and `envir`
 
-# Let's then apply the `merge` function.
+# Let's then apply the `merge` function. This performs an inner join on envir table.
 envir_coord <- merge(x = envir,
                      y = coord,
                      by = "Sites")
@@ -121,6 +121,8 @@ n_sp
 
 # creating table with each species in each area species in rows
 comm_df <- tidyr::pivot_longer(comm, cols = 2:ncol(comm), names_to = "TaxCode", values_to = "Abundance")
+#going to change to a tidy format with a column of species and the abundance in the cell actually, this is tidy data
+#it is longer than the before, this is why it is pivot_longer, the opposites is pivot_wider as well
 
 # Let's check the object's header and dimensions.
 dim(comm_df)
@@ -156,6 +158,8 @@ head(comm_traits)
 comm_total <- merge(comm_traits, envir_coord, by = "Sites")
 head(comm_total)
 
+
+if(!dir.exists("data/processed")) dir.create("data/processed")
 # Finally, we end our script writing the modified table. We will use the function `write.csv()`.
 write.csv(x = comm_total,
           file = "data/processed/03_Pavoine_full_table.csv",
