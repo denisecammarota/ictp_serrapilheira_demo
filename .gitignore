@@ -3,4 +3,12 @@
 .RData
 .Ruserdata
 
+#all html files (related to markdowns)
 *.html
+
+#all zip files
+*.zip
+
+#ignoring spatial data (raster and shapefiles)
+data/raster
+data/shapefiles
