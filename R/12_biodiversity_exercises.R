@@ -28,6 +28,8 @@ max.col(m_comm,ties.method='first')
 
 
 #Exercise 4: Shannon diversity index
+#Andrea tips: use a vector at least as an input
+#maybe use the apply functions
 shannon_div <- function(comm){
   n_sp <- length(comm) - 1 #number of species
   total_abundance <- sum(comm) #total abundance (all species)
