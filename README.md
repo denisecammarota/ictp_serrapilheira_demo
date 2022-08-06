@@ -9,7 +9,10 @@ project/
 *    ├── data/
 *    │   ├── raw
 *    │   └── processed
+*    │   └── raster
+*    │   └── shapefiles
      ├── docs/
+     ├── fct/
 *    ├── figs/
      ├── R/
 *    ├── output/
