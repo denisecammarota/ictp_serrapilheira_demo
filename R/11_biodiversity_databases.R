@@ -4,6 +4,14 @@ library(rgbif)
 library(Taxonstand)
 library(CoordinateCleaner)
 library(maps)
+# for the homework assignment, the sf and tmap
+# we worked with in script 10
+library("sf")
+library("tmap")
+library("dplyr")
+library("raster")
+# for the homework assignment, World data
+data(World)
 
 # Retrieving data for a species -----------------------------------
 species <- "Myrsine coriacea"
@@ -131,3 +139,58 @@ write.csv(myrsine.new.geo2,
 # 1) create the sh object going from decimal coordinates to polygon in df
 # 2) having sth like this, how to add it to yesterday's map? (tmap)
 # 3) explore tmap_mode
+
+# Homework ----------------------------------------------------------
+
+# Let us first explore myrsine.new.geo2 and myrsine.coords
+names(myrsine.new.geo2)
+dim(myrsine.new.geo2)
+
+names(myrsine.coord)
+dim(myrsine.coord)
+
+# Then we join like we did before with merge to get total correct data
+myrsine.new.geo3 <- merge(myrsine.coord, myrsine.new.geo2,
+                          all.x = TRUE,
+                          by = "key")
+
+dim(myrsine.new.geo3) # consistent with dimensions we should have
+
+# Conversion to sf and set coordinate system
+?st_as_sf #library sf
+?st_set_crs #library sf
+
+# Need to know the coords, which columns
+names(myrsine.new.geo3)
+
+myrsine.shapefile <- st_as_sf(myrsine.new.geo3,coords=c("decimalLongitude","decimalLatitude"))
+
+# Set coordinate system
+myrsine.shapefile <- st_set_crs(myrsine.shapefile,value=4326) # checked tutorial to know what epsg value is
+st_crs(myrsine.shapefile)
+
+# Now we should save the shapefile like in script 10
+dir.create("data/shapefiles", recursive = TRUE)
+st_write(obj = myrsine.shapefile, dsn = "data/shapefiles/myrsinesf.shp",
+         delete_layer = TRUE)
+
+# Plot with tmap like in script 10
+# First plot South America
+tmap_mode("plot")
+plot_sa <- World %>%
+  filter(continent %in% c("South America")) %>%
+  tm_shape() +
+  tm_borders()
+
+# Now plot our shapefile here
+plot_sa + tm_shape(myrsine.shapefile) + tm_bubbles(size = 0.2,
+          col = ".summary")
+
+# Finally, they asked us to use the tmap_mode to make an interactive map
+?tmap_mode() #seeing that either plot or view are modes
+
+tmap_mode("view") #set to interactive viewing
+plot_sa + tm_shape(myrsine.shapefile) + tm_bubbles(size = 0.2,
+          col = ".summary")
+
+
