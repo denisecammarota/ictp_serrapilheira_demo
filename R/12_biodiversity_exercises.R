@@ -1,5 +1,6 @@
 # Exercises -------------------------------------------------------
 library("dplyr")
+library(vegan)
 
 #Exercise 1: the 5 most abundant species using cestes
 #reading the community matrix
@@ -27,20 +28,72 @@ m_comm <- as.matrix(comm_nsites)
 max.col(m_comm,ties.method='first')
 
 
-#Exercise 4: Shannon diversity index
-#Andrea tips: use a vector at least as an input
-#maybe use the apply functions
-shannon_div <- function(comm){
-  n_sp <- length(comm) - 1 #number of species
-  total_abundance <- sum(comm) #total abundance (all species)
-  relative_abundance <- rowSums(m_comm)/total_abundance #sum all rows for species
-  pi <- relative_abundance/total_abundance #probabilities pi
-  print(total_abundance)
-  H <- 0
-  for(j in seq(1,length(pi))){
-    H <- H - pi[j]*log(pi[j])
-  }
+# Exercise 4: Shannon diversity index
+# Andrea tips: use a vector at least as an input
+
+shannon_diversity <- function(vec){
+  # calculates shannon diversity given a vector
+  vec <- vec[vec>0]
+  sum_vec <- sum(vec) # total abundance
+  pi <- vec/sum_vec # calculating relative abundance
+  H <- -sum(pi*log(pi))
   return(H)
 }
 
-shannon_div(comm)
+shannon_diversity_comm <- function(comm){
+  # calculates shannon diversity per site given community matrix
+  shannon_site <- c()
+  for(i in seq(1,nrow(comm))){
+    shannon_site[i] <- shannon_diversity(comm[i,2:ncol(comm)])
+  }
+  return(shannon_site)
+}
+
+# calculating shannon index for each site
+shannon_site <- shannon_diversity_comm(comm)
+shannon_res <- data.frame(comm$Sites,shannon_site)
+
+# visualize the results and sites
+shannon_res
+
+# checking with vegan
+shannon_res_vegan <- diversity(comm[,2:57])
+shannon_res_vegan
+
+# seeing it is actually the same results
+all(shannon_site == shannon_res_vegan)
+
+# Exercise 5: Simpson's diversity index
+# I will repeat more or less the same reasoning
+
+simpson_diversity <- function(vec){
+  # calculates simpson diversity given a vector
+  vec <- vec[vec>0]
+  sum_vec <- sum(vec) # total abundance
+  pi <- vec/sum_vec # calculating relative abundance
+  H <- 1-sum(pi*pi)
+  return(H)
+}
+
+simpson_diversity_comm <- function(comm){
+  # calculates simpson diversity per site given community matrix
+  simpson_site <- c()
+  for(i in seq(1,nrow(comm))){
+    simpson_site[i] <- simpson_diversity(comm[i,2:ncol(comm)])
+  }
+  return(simpson_site)
+}
+
+# calculating simpson index per site
+simpson_site <- simpson_diversity_comm(comm)
+simpson_res <- data.frame(comm$Sites,simpson_site)
+
+# visualize the results and sites
+simpson_res
+
+# comparing with vegan package
+simpson_res_vegan <- diversity(comm[,2:57],index="simpson")
+simpson_res_vegan
+
+# checking they are the exact same for each site
+all(simpson_site == simpson_res_vegan)
