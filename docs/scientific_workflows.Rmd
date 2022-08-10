@@ -9,12 +9,14 @@ output:
     df_print: paged
 abstract: |
   it will be worth reading the report
+bibliography: AED.bib
+csl: journal-of-ecology.csl
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-comm <- read.csv("../data/raw_cestes/comm.csv")
-envir <- read.csv("../data/raw_cestes/envir.csv")
+comm <- read.csv("../data/raw/cestes/comm.csv")
+envir <- read.csv("../data/raw/cestes/envir.csv")
 table <- read.csv("../output/02_envir_summary.csv")
 ```
 
@@ -40,7 +42,7 @@ Variation of environmental variables across sites is something.
 ```{r table}
 #names(table) <- c("Espécie", "Largura do bico (mm)",
 #                  "Comprimento do bico (mm)", "Comprimento da nadadeira (mm)")
-knitr::kable(tabela, caption = "Table 1. Mean and standard deviation of environmental metrics across sites", "pipe", digits = 2)
+knitr::kable(table, caption = "Table 1. Mean and standard deviation of environmental metrics across sites", "pipe", digits = 2)
 ```
 
 
@@ -57,6 +59,7 @@ knitr::include_graphics("../figs/02_species_abundance.png")
 ## Discussão
 
 Os pinguins são bonitinhos e parecem apresentar diferença entre os sexos. Não aprendemos muito mais sobre os pinguins porque os dados não significam quase nada sem contexto. Esperamos que vocês tenham perdido o medo e se convencido de que é preciso automatizar as partes chatas do manuscrito e focar naquilo que importa: a escrita em si.
+I will cite @zuur_protocol_2010 here
 
 ## Referências
 <div id="refs"></div>
